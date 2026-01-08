@@ -18,6 +18,12 @@ export default async function handler(req, res) {
   }
 
   try {
+    if (!openai.chatkit?.sessions?.create) {
+      throw new Error(
+        "OpenAI SDK missing ChatKit support. Bump the 'openai' package to the latest version.",
+      );
+    }
+
     const session = await openai.chatkit.sessions.create({
       // TODO: configure your ChatKit workflow/agent here
     });
