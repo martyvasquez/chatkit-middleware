@@ -2,7 +2,5 @@
   "name": "chatkit-vercel",
   "private": true,
   "type": "module",
-  "dependencies": {
-    "openai": "^4.78.0"
-  }
+  "dependencies": {}
 }
