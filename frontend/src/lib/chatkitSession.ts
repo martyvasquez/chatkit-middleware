@@ -9,6 +9,14 @@ export const workflowId = (() => {
   return id;
 })();
 
+export const domainKey = (() => {
+  const key = readEnvString(import.meta.env.VITE_CHATKIT_DOMAIN_KEY);
+  if (!key) {
+    throw new Error("Set VITE_CHATKIT_DOMAIN_KEY in your .env file.");
+  }
+  return key;
+})();
+
 export function createClientSecretFetcher(
   workflow: string,
   endpoint = "/api/create-session"
