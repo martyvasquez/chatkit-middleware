@@ -3,10 +3,11 @@ import OpenAI from "openai";
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     res.status(204).end();
     return;
   }
@@ -16,11 +17,16 @@ export default async function handler(req, res) {
     return;
   }
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  try {
+    const session = await openai.chatkit.sessions.create({
+      // TODO: configure your ChatKit workflow/agent here
+    });
 
-  const session = await openai.chatkit.sessions.create({
-    // TODO: configure your ChatKit workflow/agent here
-  });
-
-  res.json({ client_secret: session.client_secret });
+    res.json({ client_secret: session.client_secret });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to create ChatKit session",
+      message: error?.message ?? String(error),
+    });
+  }
 }
