@@ -12,7 +12,6 @@ export function ChatKitPanel() {
     api: {
       getClientSecret,
     },
-    domainKey,
   });
 
   return (
